@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Button,
   View,
   SafeAreaView,
   Text,
-  Alert,
+  Modal,
 } from 'react-native';
+import LocationModal from './LocationModal';
 
-const Separator = () => <View style={styles.separator} />;
+const Separator = () => <View style={styles.separator} />; //tirar
 
 const styles = StyleSheet.create({
   container: {
@@ -28,15 +29,17 @@ const styles = StyleSheet.create({
   },
 });
 
-const Location = () => (
-  <SafeAreaView style={styles.container}>
-    <View>
-      <Button
-        title="Pesquisar clima"
-        onPress={() => Alert.alert('Simple Button pressed')}
-      />
-    </View>
-  </SafeAreaView>
-);
+const Location = () => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View>
+        <LocationModal visible={modalOpen} />
+        <Button title="Pesquisar clima" onPress={() => setModalOpen(true)} />
+      </View>
+    </SafeAreaView>
+  );
+};
 
 export default Location;
