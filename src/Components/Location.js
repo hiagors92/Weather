@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     width: '100%',
     position: 'absolute',
+    paddingBottom: 40,
     bottom: 40,
   },
   title: {

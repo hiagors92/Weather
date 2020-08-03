@@ -1,5 +1,14 @@
-import React from 'react';
-import {StyleSheet, TouchableOpacity, View, Text, Modal} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Text,
+  Modal,
+  PermissionsAndroid,
+} from 'react-native';
+import Geolocation from 'react-native-geolocation-service';
+import Weather from './Weather';
 
 const styles = StyleSheet.create({
   modal: {
@@ -35,6 +44,8 @@ const styles = StyleSheet.create({
 });
 
 const LocationModal = ({visible}) => {
+  const [latlong, setlatlong] = useState(null);
+  console.log('hiago');
   return (
     <Modal visible={visible} transparent={true}>
       <View style={styles.modal}>
@@ -42,15 +53,34 @@ const LocationModal = ({visible}) => {
           <Text style={styles.text}>
             Deseja utilizar sua localização atual?
           </Text>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setModalOpen(true)}>
-            <Text style={styles.textbutton}>Usar minha localização</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setModalOpen(true)}>
-            <Text>Inserir outra localização</Text>
-          </TouchableOpacity>
+          {latlong ? (
+            <Weather lat={latlong.lat} long={latlong.long} />
+          ) : (
+            <>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={async () => {
+                  const granted = await PermissionsAndroid.request(
+                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+                  );
+                  console.log({granted});
+                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                    Geolocation.getCurrentPosition((position) => {
+                      setlatlong({
+                        lat: position.coords.latitude,
+                        long: position.coords.longitude,
+                      });
+                      console.log(position);
+                    });
+                  }
+                }}>
+                <Text style={styles.textbutton}>Usar minha localização</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => null}>
+                <Text>Inserir outra localização</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </View>
     </Modal>

@@ -1,7 +1,7 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
-import TopBar from './Components/TopBar';
-import List from './Components/Scenes/List';
+import {View, StyleSheet} from 'react-native';
+import List from '../../List';
+import Location from '../../Location';
 
 const styles = StyleSheet.create({
   full: {
@@ -11,8 +11,8 @@ const styles = StyleSheet.create({
 
 const App = () => (
   <View style={styles.full}>
-    <TopBar />
     <List />
+    <Location />
   </View>
 );
 
