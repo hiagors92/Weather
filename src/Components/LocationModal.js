@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import Weather from './Weather';
+import Map from './Map';
 
 const styles = StyleSheet.create({
   modal: {
@@ -43,41 +44,52 @@ const styles = StyleSheet.create({
   },
 });
 
-const LocationModal = ({visible}) => {
+const LocationModal = ({visible, onCancel}) => {
   const [latlong, setlatlong] = useState(null);
-  console.log('hiago');
+  const [enableMap, setEnableMap] = useState(false);
+
   return (
     <Modal visible={visible} transparent={true}>
       <View style={styles.modal}>
         <View style={styles.modalstyle}>
-          <Text style={styles.text}>
-            Deseja utilizar sua localização atual?
-          </Text>
-          {latlong ? (
+          {enableMap ? (
+            <Map
+              onConfirm={({latitude, longitude}) => {
+                setlatlong({lat: latitude, long: longitude});
+                setEnableMap(false);
+              }}
+              onCancel={() => setEnableMap(false)}
+            />
+          ) : latlong ? (
             <Weather lat={latlong.lat} long={latlong.long} />
           ) : (
             <>
+              <Text style={styles.text}>
+                Deseja utilizar sua localização atual?
+              </Text>
               <TouchableOpacity
                 style={styles.button}
                 onPress={async () => {
-                  const granted = await PermissionsAndroid.request(
+                  const grantedLocation = await PermissionsAndroid.request(
                     PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
                   );
-                  console.log({granted});
-                  if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                  if (grantedLocation === PermissionsAndroid.RESULTS.GRANTED) {
                     Geolocation.getCurrentPosition((position) => {
                       setlatlong({
                         lat: position.coords.latitude,
                         long: position.coords.longitude,
                       });
-                      console.log(position);
                     });
                   }
                 }}>
                 <Text style={styles.textbutton}>Usar minha localização</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => null}>
+              <TouchableOpacity onPress={() => setEnableMap(true)}>
                 <Text>Inserir outra localização</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={() => onCancel()}>
+                <Text>Cancelar</Text>
               </TouchableOpacity>
             </>
           )}

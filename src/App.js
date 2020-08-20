@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 const App = () => (
-  <View style={styles.full}>
+  <View>
     <TopBar />
     <List />
   </View>

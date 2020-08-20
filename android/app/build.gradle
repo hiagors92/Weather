@@ -226,6 +226,7 @@ buildscript {
   
   googlePlayServicesVersion = "11.8.0"
   androidMapsUtilsVersion = "0.5+"
+ }
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
