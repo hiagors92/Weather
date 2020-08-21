@@ -58,13 +58,11 @@ function Weather({lat, long, onCancel, onSave}) {
   const [nameInput, setInput] = useState(false);
   const [name, setname] = useState();
   useEffect(() => {
-    getWeather(lat, long)
-      .then((response) => {
-        const data = response.data;
-        setapidata(data);
-        setloading(false);
-      })
-      .catch((error) => console.log({error}));
+    getWeather(lat, long).then((response) => {
+      const data = response.data;
+      setapidata(data);
+      setloading(false);
+    });
   }, [lat, long]);
 
   const {addLocation} = useList();

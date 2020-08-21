@@ -18,11 +18,9 @@ const styles = StyleSheet.create({
 
 const Map = ({onConfirm, onCancel}) => {
   const [latLong, setLatLong] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: -8.056129395788155,
+    longitude: -34.88086458295584,
   });
-
-  console.log({latLong});
 
   return (
     <View>

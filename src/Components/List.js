@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useList} from '../Providers/ListProvider';
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   container: {
@@ -29,17 +30,43 @@ const styles = StyleSheet.create({
   },
 });
 
-const Item = ({title}) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+const key = '47ca20bc7ef8bce22d81657f823a72a6';
+
+async function getWeather(lat, long) {
+  return await axios.get(
+    `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${key}&units=metric`,
+  );
+}
+
+const Item = ({id, title, latlong}) => {
+  const [temp, settemp] = useState();
+  const {removeLocation} = useList();
+
+  useEffect(() => {
+    getWeather(latlong.lat, latlong.long).then((response) => {
+      const data = response.data;
+      settemp(data.main.temp);
+    });
+  }, [latlong]);
+  return (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+      <Text>{`${temp}ºC` || 'qq'}</Text>
+      <TouchableOpacity
+        onPress={() => {
+          removeLocation(id);
+        }}>
+        <Text>Remover</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const List = () => {
   const {locationList} = useList();
   const renderItem = ({item}) => (
     <View>
-      <Item title={item.title} />
+      <Item title={item.title} latlong={item.latlong} id={item.id} />
     </View>
   );
 

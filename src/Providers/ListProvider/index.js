@@ -1,21 +1,36 @@
-import React, {useState, useContext, createContext} from 'react';
-
+import React, {useState, useContext, createContext, useEffect} from 'react';
+import uuid from 'react-native-uuid';
+import * as Storage from './Storage';
 const ListContext = createContext();
 
 const ListProvider = (props) => {
   const [locationList, setLocationList] = useState([]);
-
-  const addLocation = (location) => {
+  useEffect(() => {
+    Storage.readAllItems().then((items) => {
+      const sortedItems = items.sort((a, b) => b.timestamp - a.timestamp);
+      setLocationList(sortedItems);
+    });
+  }, []);
+  const addLocation = ({name, latlong}) => {
     setLocationList((list) => {
-      // TODO: add lat long pra pegar temperatura na lista
-      const newItem = {id: location.name, title: location.name};
-
+      const newItem = {id: uuid.v4(), title: name, latlong};
+      Storage.createItem(newItem.id, newItem);
       return [newItem, ...list];
     });
   };
 
+  const removeLocation = (removedId) => {
+    setLocationList((list) => {
+      Storage.deleteItem(removedId);
+      return list.filter(({id}) => id !== removedId);
+    });
+  };
+
   return (
-    <ListContext.Provider value={{locationList, addLocation}} {...props} />
+    <ListContext.Provider
+      value={{locationList, addLocation, removeLocation}}
+      {...props}
+    />
   );
 };
 
