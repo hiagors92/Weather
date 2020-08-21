@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const LocationModal = ({visible, onCancel}) => {
+const LocationModal = ({visible, onCancel, onSave}) => {
   const [latlong, setlatlong] = useState(null);
   const [enableMap, setEnableMap] = useState(false);
 
@@ -61,7 +61,18 @@ const LocationModal = ({visible, onCancel}) => {
               onCancel={() => setEnableMap(false)}
             />
           ) : latlong ? (
-            <Weather lat={latlong.lat} long={latlong.long} />
+            <Weather
+              lat={latlong.lat}
+              long={latlong.long}
+              onCancel={() => {
+                setlatlong(null);
+                onCancel();
+              }}
+              onSave={() => {
+                setlatlong(null);
+                onSave();
+              }}
+            />
           ) : (
             <>
               <Text style={styles.text}>
@@ -88,7 +99,11 @@ const LocationModal = ({visible, onCancel}) => {
                 <Text>Inserir outra localização</Text>
               </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => onCancel()}>
+              <TouchableOpacity
+                onPress={() => {
+                  setlatlong(null);
+                  onCancel();
+                }}>
                 <Text>Cancelar</Text>
               </TouchableOpacity>
             </>

@@ -31,6 +31,7 @@ const Location = () => {
       <View>
         <LocationModal
           visible={modalOpen}
+          onSave={() => setModalOpen(false)}
           onCancel={() => setModalOpen(false)}
         />
         <Button title="Pesquisar clima" onPress={() => setModalOpen(true)} />

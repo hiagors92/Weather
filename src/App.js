@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import TopBar from './Components/TopBar';
 import List from './Components/Scenes/List';
+import ListProvider from './Providers/ListProvider';
 
 const styles = StyleSheet.create({
   full: {
@@ -10,10 +11,12 @@ const styles = StyleSheet.create({
 });
 
 const App = () => (
-  <View>
-    <TopBar />
-    <List />
-  </View>
+  <ListProvider>
+    <View>
+      <TopBar />
+      <List />
+    </View>
+  </ListProvider>
 );
 
 export default App;
