@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import TopBar from './Components/TopBar';
-import List from './Components/Scenes/List';
+import List from './Components/List';
+import Footer from './Components/Footer';
 import ListProvider from './Providers/ListProvider';
 
 const styles = StyleSheet.create({
@@ -14,7 +15,10 @@ const App = () => (
   <ListProvider>
     <View>
       <TopBar />
-      <List />
+      <View style={styles.full}>
+        <List />
+        <Footer />
+      </View>
     </View>
   </ListProvider>
 );

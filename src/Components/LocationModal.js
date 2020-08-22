@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  Modal,
-  PermissionsAndroid,
-} from 'react-native';
+import {StyleSheet, View, Text, Modal, PermissionsAndroid} from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 import Weather from './Weather';
 import Map from './Map';
+import TouchableButton from './TouchableButton';
 
 const styles = StyleSheet.create({
   modal: {
@@ -17,7 +11,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  modalstyle: {
+  modalStyle: {
     maxWidth: 338,
     padding: 20,
     backgroundColor: '#EAEBEC',
@@ -29,83 +23,68 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 16,
   },
-  button: {
-    padding: 16,
-    marginBottom: 12,
-    backgroundColor: '#dbced2',
-    borderRadius: 10,
-  },
-  textbutton: {
-    color: 'black',
-  },
-
-  textbutton2: {
-    fontWeight: 'bold',
-  },
 });
 
 const LocationModal = ({visible, onCancel, onSave}) => {
-  const [latlong, setlatlong] = useState(null);
+  const [latLong, setlatLong] = useState(null);
   const [enableMap, setEnableMap] = useState(false);
+
+  const getCurrentLocation = async () => {
+    const grantedLocation = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+    );
+    if (grantedLocation === PermissionsAndroid.RESULTS.GRANTED) {
+      Geolocation.getCurrentPosition((position) => {
+        setlatLong({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        });
+      });
+    }
+  };
 
   return (
     <Modal visible={visible} transparent={true}>
       <View style={styles.modal}>
-        <View style={styles.modalstyle}>
-          {enableMap ? (
-            <Map
-              onConfirm={({latitude, longitude}) => {
-                setlatlong({lat: latitude, long: longitude});
-                setEnableMap(false);
-              }}
-              onCancel={() => setEnableMap(false)}
-            />
-          ) : latlong ? (
+        <View style={styles.modalStyle}>
+          {latLong ? (
             <Weather
-              lat={latlong.lat}
-              long={latlong.long}
+              lat={latLong.lat}
+              long={latLong.long}
               onCancel={() => {
-                setlatlong(null);
+                setlatLong(null);
+                setEnableMap(false);
                 onCancel();
               }}
               onSave={() => {
-                setlatlong(null);
+                setlatLong(null);
+                setEnableMap(false);
                 onSave();
               }}
             />
+          ) : enableMap ? (
+            <Map onConfirm={setlatLong} onCancel={() => setEnableMap(false)} />
           ) : (
             <>
               <Text style={styles.text}>
                 Deseja utilizar sua localização atual?
               </Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={async () => {
-                  const grantedLocation = await PermissionsAndroid.request(
-                    PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-                  );
-                  if (grantedLocation === PermissionsAndroid.RESULTS.GRANTED) {
-                    Geolocation.getCurrentPosition((position) => {
-                      setlatlong({
-                        lat: position.coords.latitude,
-                        long: position.coords.longitude,
-                      });
-                    });
-                  }
-                }}>
-                <Text style={styles.textbutton}>Usar minha localização</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => setEnableMap(true)}>
-                <Text>Inserir outra localização</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity
+              <TouchableButton
+                onPress={getCurrentLocation}
+                text="Usar minha localização"
+              />
+              <TouchableButton
+                onPress={() => setEnableMap(true)}
+                text="Inserir outra localização"
+              />
+              <TouchableButton
                 onPress={() => {
-                  setlatlong(null);
+                  setlatLong(null);
                   onCancel();
-                }}>
-                <Text>Cancelar</Text>
-              </TouchableOpacity>
+                }}
+                text="Cancelar"
+                secondary
+              />
             </>
           )}
         </View>

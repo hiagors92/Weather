@@ -11,9 +11,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
   },
-  logo: {
-    width: '100%',
-  },
 });
 
 const TopBar = () => (

@@ -1,6 +1,7 @@
 import React, {useState, useContext, createContext, useEffect} from 'react';
 import uuid from 'react-native-uuid';
 import * as Storage from './Storage';
+
 const ListContext = createContext();
 
 const ListProvider = (props) => {
@@ -11,9 +12,10 @@ const ListProvider = (props) => {
       setLocationList(sortedItems);
     });
   }, []);
-  const addLocation = ({name, latlong}) => {
+
+  const addLocation = ({name, latLong}) => {
     setLocationList((list) => {
-      const newItem = {id: uuid.v4(), title: name, latlong};
+      const newItem = {id: uuid.v4(), title: name, latLong};
       Storage.createItem(newItem.id, newItem);
       return [newItem, ...list];
     });

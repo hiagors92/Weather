@@ -2,8 +2,6 @@ import React, {useState} from 'react';
 import {StyleSheet, Button, View, SafeAreaView} from 'react-native';
 import LocationModal from './LocationModal';
 
-const Separator = () => <View style={styles.separator} />; //tirar
-
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
@@ -13,17 +11,9 @@ const styles = StyleSheet.create({
     paddingBottom: 90,
     bottom: 40,
   },
-  title: {
-    textAlign: 'center',
-    marginVertical: 8,
-  },
-  fixToText: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
 });
 
-const Location = () => {
+const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -40,4 +30,4 @@ const Location = () => {
   );
 };
 
-export default Location;
+export default Footer;

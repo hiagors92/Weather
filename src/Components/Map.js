@@ -1,13 +1,7 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Text,
-  Modal,
-  PermissionsAndroid,
-} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
+import TouchableButton from './TouchableButton';
 
 const styles = StyleSheet.create({
   map: {
@@ -37,20 +31,13 @@ const Map = ({onConfirm, onCancel}) => {
           onDragEnd={(e) => setLatLong(e.nativeEvent.coordinate)}
         />
       </MapView>
-      <TouchableOpacity
-        style={styles.button}
+      <TouchableButton onPress={onCancel} text="Cancelar" />
+      <TouchableButton
         onPress={() => {
-          onCancel();
-        }}>
-        <Text style={styles.textbutton}>Cancelar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          onConfirm(latLong);
-        }}>
-        <Text style={styles.textbutton}>Confirmar</Text>
-      </TouchableOpacity>
+          onConfirm({lat: latLong.latitude, long: latLong.longitude});
+        }}
+        text="Confirmar"
+      />
     </View>
   );
 };
