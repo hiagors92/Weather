@@ -2,19 +2,16 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#566078',
-  },
   text: {
     fontSize: 40,
     fontWeight: 'bold',
     textAlign: 'center',
-    color: 'white',
+    color: '#161D4B',
   },
 });
 
 const TopBar = () => (
-  <View style={styles.container}>
+  <View>
     <Text style={styles.text}>Weather App</Text>
   </View>
 );

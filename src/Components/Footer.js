@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {StyleSheet, Button, View, SafeAreaView} from 'react-native';
+import {StyleSheet, View, SafeAreaView} from 'react-native';
 import LocationModal from './LocationModal';
+import TouchableButton from './TouchableButton';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,7 +25,10 @@ const Footer = () => {
           onSave={() => setModalOpen(false)}
           onCancel={() => setModalOpen(false)}
         />
-        <Button title="Pesquisar clima" onPress={() => setModalOpen(true)} />
+        <TouchableButton
+          onPress={() => setModalOpen(true)}
+          text="Pesquisar clima"
+        />
       </View>
     </SafeAreaView>
   );

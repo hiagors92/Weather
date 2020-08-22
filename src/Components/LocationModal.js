@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     padding: 16,
   },
+  spacedButton: {
+    marginTop: 8,
+  },
 });
 
 const LocationModal = ({visible, onCancel, onSave}) => {
@@ -76,6 +79,7 @@ const LocationModal = ({visible, onCancel, onSave}) => {
               <TouchableButton
                 onPress={() => setEnableMap(true)}
                 text="Inserir outra localização"
+                style={styles.spacedButton}
               />
               <TouchableButton
                 onPress={() => {
@@ -84,6 +88,7 @@ const LocationModal = ({visible, onCancel, onSave}) => {
                 }}
                 text="Cancelar"
                 secondary
+                style={styles.spacedButton}
               />
             </>
           )}

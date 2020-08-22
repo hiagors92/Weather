@@ -5,11 +5,27 @@ import TouchableButton from './TouchableButton';
 import {getWeather} from '../lib/openWeather';
 
 const styles = StyleSheet.create({
+  label: {
+    color: '#566078',
+    fontSize: 18,
+    marginBottom: 8,
+    alignSelf: 'center',
+  },
   input: {
-    width: 200,
     fontSize: 24,
     height: 50,
     backgroundColor: 'white',
+    marginBottom: 24,
+  },
+  tempText: {
+    fontSize: 64,
+    fontWeight: 'bold',
+    color: '#161D4B',
+    paddingBottom: 24,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
 });
 
@@ -39,24 +55,29 @@ function Weather({lat, long, onCancel, onSave}) {
         <Text>Loading...</Text>
       ) : nameInput ? (
         <>
+          <Text style={styles.label}>Defina uma nome para a localização</Text>
           <TextInput
             onChangeText={setname}
             style={styles.input}
             onSubmitEditing={submit}
           />
-          <TouchableButton text="Cancelar" onPress={onCancel} />
-          <TouchableButton text="Confirmar" onPress={submit} />
+          <View style={styles.buttonContainer}>
+            <TouchableButton text="Cancelar" onPress={onCancel} secondary />
+            <TouchableButton text="Confirmar" onPress={submit} />
+          </View>
         </>
       ) : (
         <>
-          <Text>{`${apidata.main.temp} graus`}</Text>
-          <TouchableButton text="Cancelar" onPress={onCancel} />
-          <TouchableButton
-            text="Favoritar"
-            onPress={() => {
-              setInput(true);
-            }}
-          />
+          <Text style={styles.tempText}>{`${apidata.main.temp} ºC`}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableButton text="Cancelar" onPress={onCancel} secondary />
+            <TouchableButton
+              text="Favoritar"
+              onPress={() => {
+                setInput(true);
+              }}
+            />
+          </View>
         </>
       )}
     </View>

@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
     width: 300,
     height: 400,
   },
+  spacedButton: {
+    marginTop: 8,
+  },
 });
 
 const Map = ({onConfirm, onCancel}) => {
@@ -31,12 +34,18 @@ const Map = ({onConfirm, onCancel}) => {
           onDragEnd={(e) => setLatLong(e.nativeEvent.coordinate)}
         />
       </MapView>
-      <TouchableButton onPress={onCancel} text="Cancelar" />
       <TouchableButton
         onPress={() => {
           onConfirm({lat: latLong.latitude, long: latLong.longitude});
         }}
         text="Confirmar"
+        style={styles.spacedButton}
+      />
+      <TouchableButton
+        onPress={onCancel}
+        text="Cancelar"
+        secondary
+        style={styles.spacedButton}
       />
     </View>
   );
